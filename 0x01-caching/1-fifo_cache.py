@@ -13,7 +13,6 @@ class FIFOCache(BaseCaching):
         """ Putting elments in cache."""
         if key is None or item is None:
             return
-        print(len(self.cache_data))
         self.cache_data[key] = item
         if len(self.cache_data) > BaseCaching.MAX_ITEMS:
             first_item = list(self.cache_data.items())[0]
