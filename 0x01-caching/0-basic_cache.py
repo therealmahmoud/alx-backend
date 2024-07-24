@@ -4,8 +4,9 @@ from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
-    """ Putting elments in cache."""
+    """ BasicCache class."""
     def put(self, key, item):
+        """ Putting elments in cache."""
         if key is None or item is None:
             return
         self.cache_data[key] = item
