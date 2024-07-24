@@ -5,6 +5,10 @@ from base_caching import BaseCaching
 
 class FIFOCache(BaseCaching):
     """ FIFOCache class."""
+    def __init__(self):
+        """Initializes the cache."""
+        super().__init__()
+
     def put(self, key, item):
         """ Putting elments in cache."""
         if key is None or item is None:
