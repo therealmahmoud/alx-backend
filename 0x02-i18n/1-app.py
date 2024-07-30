@@ -4,8 +4,14 @@ from flask import Flask, render_template
 from flask_babel import Babel
 
 
+class Config:
+    LANGUAGES = ["en", "fr"]
+    BABEL_DEFAULT_LOCALE = "en"
+    BABEL_DEFAULT_TIMEZONE = "UTC"
+
+
 app = Flask(__name__)
-app.config['BABLE_DEFAULT_LOCALE'] = "en", "UTC"
+app.config.from_object(Config)
 Babel = Babel(app)
 
 
@@ -13,10 +19,6 @@ Babel = Babel(app)
 def index() -> str:
     """ Home route"""
     return render_template('0-index.html')
-
-
-class Config:
-    LANGUAGES = ["en", "fr"]
 
 
 if __name__ == "__main__":
