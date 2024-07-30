@@ -18,6 +18,7 @@ babel = Babel(app)
 
 @babel.localeselector
 def get_locale():
+    """ Returns the locale of the web page."""
     return request.accept_languages.best_match([Config.LANGUAGES])
 
 
