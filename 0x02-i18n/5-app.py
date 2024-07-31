@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Flask app."""
+"""A Basic Flask app with internationalization support.
+"""
 from flask_babel import Babel
-from flask import Flask, render_template, request, g
 from typing import Union, Dict
+from flask import Flask, render_template, request, g
 
 
 class Config:
-    """ Flask babel config."""
+    """Represents a Flask Babel configuration.
+    """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
@@ -14,6 +16,7 @@ class Config:
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.url_map.strict_slashes = False
 babel = Babel(app)
 users = {
     1: {"name": "Balou", "locale": "fr", "timezone": "Europe/Paris"},
@@ -24,16 +27,18 @@ users = {
 
 
 def get_user() -> Union[Dict, None]:
-    """ Gets user based on id."""
-    user_id = users.keys()
-    if user_id in users:
-        return user_id
+    """Retrieves a user based on a user id.
+    """
+    login_id = request.args.get('login_as')
+    if login_id:
+        return users.get(int(login_id))
     return None
 
 
 @app.before_request
 def before_request() -> None:
-    """ Getting user before any request."""
+    """Performs some routines before each request's resolution.
+    """
     user = get_user()
     g.user = user
 
@@ -45,14 +50,15 @@ def get_locale() -> str:
     locale = request.args.get('locale', '')
     if locale in app.config["LANGUAGES"]:
         return locale
-    return request.accept_languages.best_match([Config.LANGUAGES])
+    return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
 @app.route('/')
-def index() -> str:
-    """ Home route"""
+def get_index() -> str:
+    """The home/index page.
+    """
     return render_template('5-index.html')
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
