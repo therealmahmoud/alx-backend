@@ -24,6 +24,7 @@ users = {
 
 
 def get_user() -> Union[Dict, None]:
+    """ Gets user based on id."""
     user_id = users.keys()
     if user_id in users:
         return user_id
@@ -32,6 +33,7 @@ def get_user() -> Union[Dict, None]:
 
 @app.before_request
 def before_request() -> None:
+    """ Getting user before any request."""
     user = get_user()
     g.user = user
 
