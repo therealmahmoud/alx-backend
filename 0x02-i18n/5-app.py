@@ -25,9 +25,9 @@ users = {
 
 def get_user() -> Union[Dict, None]:
     """ Gets user based on id."""
-    login_id = request.args.get('login_as')
-    if login_id:
-        return users.get(int(login_id))
+    user_id = users.keys()
+    if user_id in users:
+        return user_id
     return None
 
 
@@ -39,23 +39,19 @@ def before_request() -> None:
 
 
 @babel.localeselector
-def get_locale():
-    """ Returns the locale of the web page."""
-    queries = request.query_string.decode('utf-8').split('&')
-    query_table = dict(map(
-        lambda x: (x if '=' in x else '{}='.format(x)).split('='),
-        queries,
-    ))
-    if 'locale' in query_table:
-        if query_table['locale'] in app.config["LANGUAGES"]:
-            return query_table['locale']
+def get_locale() -> str:
+    """Retrieves the locale for a web page.
+    """
+    locale = request.args.get('locale', '')
+    if locale in app.config["LANGUAGES"]:
+        return locale
     return request.accept_languages.best_match([Config.LANGUAGES])
 
 
 @app.route('/')
 def index() -> str:
     """ Home route"""
-    return render_template('3-index.html')
+    return render_template('5-index.html')
 
 
 if __name__ == "__main__":
